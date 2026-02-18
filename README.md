@@ -1,12 +1,12 @@
 # Anima*l*
 
 ```
-/ˈæn.ɪ.mə/ 
+/ˈæn.ɪ.mə/
 
-the soul, especially the irrational part of the soul as distinguished from the rational mind.
+anima: the soul, especially the irrational part of the soul as distinguished from the rational mind.
 ```
 
-Animal extracts emotional state from raw text, and converts it into a vector that can be broadcast for various downstream purposes. Current implementation provides real-time changes in eye-color and body language for live streaming conversation for the Reachy Mini robot. A more significant writeup (draft-level) for the project that inspried this can be seen at:  
+Anima*l* extracts emotional state from raw text, and converts it into a vector that can be broadcast for various downstream purposes. Current implementation provides real-time changes in eye-color and body language for live streaming conversation for the Reachy Mini robot. A more significant writeup (draft-level) for the project that inspried this can be seen at:  
 https://github.com/brainwavecollective/affection/blob/main/EMOTION_ENGINE.md
 
 You can get a sense for how the engine works by running `uv run tests/smoke.py`
