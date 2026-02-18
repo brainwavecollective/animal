@@ -1,0 +1,103 @@
+import numpy as np
+from typing import List
+
+from ..config import Config
+from ..utils.time_source import TimeSource
+
+
+class Blend:
+    """
+    Attack–Hold–Decay emotional state system.
+
+    - Bursts are shown at full strength
+    - Held for perceptual clarity
+    - Then decay back toward baseline
+    - Each burst nudges the baseline slightly
+    """
+
+    def __init__(self, config: Config, time_source: TimeSource):
+        self.config = config
+        self.clock = time_source
+
+        # Initial baseline: neutral emotional field
+        self.baseline = np.array([0.5, 0.5, 0.5, 0.5, 0.8], dtype=float)
+        self.current = self.baseline.copy()
+
+        self.hold_until = 0.0
+        self.dwell_until = 0.0
+        self.last_baseline_update = self.clock.now()
+
+    # ---------------------------------------------------------
+    # Burst application (fast emotional shift)
+    # ---------------------------------------------------------
+
+    def apply_burst(self, burst: List[float], influence: float | None = None):
+        burst_array = np.array(burst, dtype=float)
+
+        # Immediately show full emotion
+        self.current = burst_array.copy()
+
+        now = self.clock.now()
+
+        # Dwell + hold timing
+        self.dwell_until = now + self.config.dwell_seconds
+        self.hold_until = self.dwell_until + self.config.hold_seconds
+
+        # Nudge baseline toward burst
+        alpha = influence if influence is not None else self.config.default_influence
+
+        self.baseline += (self.current - self.baseline) * alpha
+        self.baseline = np.clip(
+            self.baseline,
+            self.config.min_vadcc,
+            self.config.max_vadcc,
+        )
+
+    # ---------------------------------------------------------
+    # Slow baseline correction (anchor-driven)
+    # ---------------------------------------------------------
+
+    def apply_baseline(self, new_baseline: List[float]):
+        # Strong burst influence
+        self.apply_burst(
+            new_baseline,
+            influence=self.config.baseline_influence,
+        )
+        self.last_baseline_update = self.clock.now()
+
+    # ---------------------------------------------------------
+    # Tick update (~config.tick_rate_hz)
+    # ---------------------------------------------------------
+
+    def tick(self) -> List[float]:
+        now = self.clock.now()
+
+        # During dwell + hold plateau
+        if now < self.hold_until:
+            return self.current.tolist()
+
+        # Decay phase
+        self.current += (
+            (self.baseline - self.current) * self.config.decay_rate
+        )
+
+        # Clip for safety
+        self.current = np.clip(
+            self.current,
+            self.config.min_vadcc,
+            self.config.max_vadcc,
+        )
+
+        return self.current.tolist()
+
+    # ---------------------------------------------------------
+    # Debug state inspection
+    # ---------------------------------------------------------
+
+    def get_state(self):
+        return {
+            "baseline": self.baseline.tolist(),
+            "current": self.current.tolist(),
+            "hold_remaining": max(0.0, self.hold_until - self.clock.now()),
+            "time_since_baseline_update": self.clock.elapsed_since(self.last_baseline_update),
+        }

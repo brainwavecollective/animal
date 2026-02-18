@@ -1,0 +1,51 @@
+# ----------------------
+# Python
+# ----------------------
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Test / coverage
+.coverage
+.coverage.*
+.pytest_cache/
+htmlcov/
+
+# Type checkers
+.mypy_cache/
+.pyright/
+.ruff_cache/
+
+# IDEs
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Local data (usually not tracked)
+data/
+
+# Environment variables
+.env
+.env.*
+
+# uv lockfile (uncomment if you DON'T want it tracked)
+# uv.lock
