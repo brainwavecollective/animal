@@ -7,11 +7,10 @@ the soul, especially the irrational part of the soul as distinguished from the r
 ```
 Anima*l* extracts a living emotional state from raw text, and outputs a vector that can be broadcast to any downstream consumer.  
 
-One example use is generating in-flight modifications to body language and changes in eye-color with the related [Reachy Mini Conversational App adapter](https://github.com/brainwavecollective/animal-reachy-conversation) for the [Reachy Mini](https://github.com/pollen-robotics/reachy_mini) robot.  
+One example use is generating in-flight modifications to body language and changes in eye-color with the related [Reachy Mini Conversational App behavioral adapter](https://github.com/brainwavecollective/animal-reachy-conversation) for the [Reachy Mini](https://github.com/pollen-robotics/reachy_mini) robot.  To get a better sense of how the affect extraction engine works you can check out this [writeup explaining the approach](https://github.com/brainwavecollective/affection/blob/main/EMOTION_ENGINE.md).  
 
-A more significant writeup that explains the approach can be seen at: https://github.com/brainwavecollective/affection/blob/main/EMOTION_ENGINE.md  
-
-You can get a quick sense for how the engine converts text to an emotional vector by running `uv run tests/smoke.py`  
+You can get a quick sense for how the engine converts text to an emotional vector by running:  
+`uv run tests/smoke.py`  
 
 ## Installation  
 
